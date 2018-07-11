@@ -6,7 +6,9 @@ RAISE_COMMIT= $(shell git -C ${RAISE} log --pretty=format:'%h' -n1)
 CORE_COMMIT= $(shell git -C ${CORE} log --pretty=format:'%h' -n1)
 SIDES_COMMIT= $(shell git -C ${SIDES} log --pretty=format:'%h' -n1)
 
-DIR=Raise-${RAISE_COMMIT}-Core-${CORE_COMMIT}-Side-${SIDES_COMMIT}
+DATE := $(shell date +'%Y-%m-%d')
+
+DIR=${DATE}-Raise-${RAISE_COMMIT}-Core-${CORE_COMMIT}-Side-${SIDES_COMMIT}
 
 all: ${DIR}/Left.hex ${DIR}/Right.hex ${DIR}/Raise.hex
 ${DIR}:
