@@ -1,8 +1,8 @@
 # where the repos are
-RAISE=~/work/shortcut/raise-v3/firmwares/Raise-Firmware-ARM
+RAISE=~/work/dygma/raise-v3/firmwares/Raise-Firmware-ARM
 CORE=~/Arduino/hardware/dygma/samd
-SIDES=~/work/shortcut/raise-v3/firmwares/at88-matrix-test
-SIDE_BOOTLOADER=~/work/shortcut/raise-v3/firmwares/attiny_i2c_bootloader/
+SIDES=~/work/dygma/raise-v3/firmwares/at88-matrix-test
+SIDE_BOOTLOADER=~/work/dygma/raise-v3/firmwares/attiny_i2c_bootloader/
 
 # $@ The file name of the target of the rule.rule
 # $< first pre requisite
@@ -19,10 +19,14 @@ DATE := $(shell date +'%Y-%m-%d')
 # dir name
 DIR=${DATE}-Raise-${RAISE_COMMIT}-Core-${CORE_COMMIT}-Side-${SIDES_COMMIT}-SideBootloader-${SIDE_BOOTLOADER_COMMIT}
 
-all: ${DIR}/side.hex ${DIR}/side-with-bootloader.hex ${DIR}/Raise-firmware.bin ${DIR}/Raise-bootloader.bin
+all: ${DIR}/side.hex ${DIR}/side-with-bootloader.hex ${DIR}/Raise-firmware.bin ${DIR}/Raise-bootloader.bin latest
 
 ${DIR}:
 	mkdir ${DIR}
+
+latest:
+	rm -f latest
+	ln -s ${DIR} latest
 
 ${DIR}/side.hex: ${DIR}
 	git -C ${SIDES} diff-index --quiet HEAD || exit 1
