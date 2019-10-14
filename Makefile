@@ -19,12 +19,12 @@ DATE := $(shell date +'%Y-%m-%d')
 # dir name
 DIR=${DATE}-Raise-${RAISE_COMMIT}-Core-${CORE_COMMIT}-Side-${SIDES_COMMIT}-SideBootloader-${SIDE_BOOTLOADER_COMMIT}
 
-all: ${DIR}/side.hex ${DIR}/side-with-bootloader.hex ${DIR}/Raise-firmware.bin ${DIR}/Raise-bootloader.bin latest
+all: ${DIR}/side.hex ${DIR}/side-with-bootloader.hex ${DIR}/Raise-firmware.bin ${DIR}/Raise-firmware.hex ${DIR}/Raise-bootloader.bin latest
 
 ${DIR}:
 	mkdir ${DIR}
 
-latest:
+latest: ${DIR}
 	rm -f latest
 	ln -s ${DIR} latest
 
@@ -40,7 +40,10 @@ ${DIR}/Raise-firmware.bin: ${DIR}
 	git -C ${RAISE} diff-index --quiet HEAD || exit 1
 	cp ${RAISE}/output/Raise-Firmware.ino.bin $@
 
+${DIR}/Raise-firmware.hex: ${DIR}
+	git -C ${RAISE} diff-index --quiet HEAD || exit 1
+	cp ${RAISE}/output/Raise-Firmware.ino.hex $@
+
 ${DIR}/Raise-bootloader.bin: ${DIR}
 	git -C ${CORE} diff-index --quiet HEAD || exit 1
 	cp ${CORE}/bootloaders/zero/samd21_sam_ba.bin $@
-    
